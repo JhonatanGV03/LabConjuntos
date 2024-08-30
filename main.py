@@ -78,12 +78,40 @@ def dif_simetrica():
     return resultado
 
 
-def subconjuntos():
-    print("hello world")
 
 
-def superconjuntos():
-    print("hello world")
+
+def subconjuntos(conjuntos):
+    if not conjuntos:
+        return []
+
+    primer_conjunto = list(conjuntos.values())[0]
+    subconjuntos_encontrados = []
+
+    # Iteramos sobre todos los conjuntos para encontrar los subconjuntos del primer conjunto
+    for conjunto in conjuntos.values():
+        if conjunto.issubset(primer_conjunto):
+            subconjuntos_encontrados.append(conjunto)
+    
+    return subconjuntos_encontrados
+
+
+
+
+
+def superconjuntos(conjuntos):
+    if not conjuntos:
+        return []
+
+    primer_conjunto = list(conjuntos.values())[0]
+    superconjuntos_encontrados = []
+
+    # Iteramos sobre todos los conjuntos para encontrar los superconjuntos del primer conjunto
+    for conjunto in conjuntos.values():
+        if conjunto.issuperset(primer_conjunto):
+            superconjuntos_encontrados.append(conjunto)
+    
+    return superconjuntos_encontrados
 
 
 # Llamado de metodos
@@ -96,6 +124,11 @@ interseccion = interseccion()  # Obtiene la intersección de todos los conjuntos
 diferencia_resultado = diferencia()  # Obtiene la diferencia entre el primer conjunto y los demás
 
 diferencia_simetrica_resultado = dif_simetrica()  # Obtiene la diferencia simétrica entre los conjuntos
+
+subconjuntos_resultado = subconjuntos(conjuntos)  # Obtiene los subconjuntos del primer conjunto
+
+superconjuntos_resultado = superconjuntos(conjuntos)  # Obtiene los superconjuntos del primer conjunto
+
 
 
 
@@ -116,3 +149,9 @@ print(diferencia_resultado)  # Muestra la diferencia entre el primer conjunto y 
 
 print("\nDiferencia simétrica de todos los conjuntos:")
 print(diferencia_simetrica_resultado)  # Muestra la diferencia simétrica de todos los conjuntos
+
+print("\nSubconjuntos del primer conjunto:")
+print(subconjuntos_resultado)  # Muestra los subconjuntos del primer conjunto
+
+print("\nSuperconjuntos del primer conjunto:")
+print(superconjuntos_resultado)  # Muestra los superconjuntos del primer conjunto
