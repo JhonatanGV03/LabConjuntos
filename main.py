@@ -1,3 +1,9 @@
+import matplotlib.pyplot as plt
+from matplotlib_venn import venn2_unweighted, venn3_unweighted
+from upsetplot import plot as upsetplot
+from upsetplot import from_memberships
+import pandas as pd
+
 
 def obtener_conjuntos():
     n = int(input("Ingrese la cantidad de conjuntos: "))
@@ -20,7 +26,7 @@ def unir_conjuntos(conjuntos):
 
 
 
-def interseccion():
+def interseccion(conjuntos):
     if not conjuntos:
         return set()
 
@@ -40,7 +46,7 @@ def interseccion():
 
 
 
-def diferencia():
+def diferencia(conjuntos):
     if not conjuntos:
         return set()
     
@@ -54,7 +60,7 @@ def diferencia():
     return diferencia
     
 
-def dif_simetrica():
+def dif_simetrica(conjuntos):
     if not conjuntos:
         return set()
     
@@ -119,16 +125,47 @@ conjuntos = obtener_conjuntos()  # Permite al usuario ingresar los conjuntos
 
 union = unir_conjuntos(conjuntos)  # Obtiene la unión de todos los conjuntos
 
-interseccion = interseccion()  # Obtiene la intersección de todos los conjuntos
+interseccion = interseccion(conjuntos)  # Obtiene la intersección de todos los conjuntos
 
-diferencia_resultado = diferencia()  # Obtiene la diferencia entre el primer conjunto y los demás
+diferencia_resultado = diferencia(conjuntos)  # Obtiene la diferencia entre el primer conjunto y los demás
 
-diferencia_simetrica_resultado = dif_simetrica()  # Obtiene la diferencia simétrica entre los conjuntos
+diferencia_simetrica_resultado = dif_simetrica(conjuntos)  # Obtiene la diferencia simétrica entre los conjuntos
 
 subconjuntos_resultado = subconjuntos(conjuntos)  # Obtiene los subconjuntos del primer conjunto
 
 superconjuntos_resultado = superconjuntos(conjuntos)  # Obtiene los superconjuntos del primer conjunto
 
+
+
+def visualizar_conjuntos(conjuntos): # Genera el diagrama de Venn de los conjuntos
+    n = len(conjuntos)
+    if n == 2:
+        set1, set2 = conjuntos['A'], conjuntos['B']
+        v = venn2_unweighted(subsets=(set1, set2), set_labels=('A', 'B'))
+
+        # Personalizar las etiquetas
+        v.get_label_by_id('10').set_text('\n'.join(set1 - set2))
+        v.get_label_by_id('01').set_text('\n'.join(set2 - set1))
+        v.get_label_by_id('11').set_text('\n'.join(set1 & set2))
+
+    elif n == 3:
+        set1, set2, set3 = conjuntos['A'], conjuntos['B'], conjuntos['C']
+        v = venn3_unweighted(subsets=(set1, set2, set3), set_labels=('A', 'B', 'C'))
+
+        v.get_label_by_id('100').set_text('\n'.join(set1 - set2 - set3))
+        v.get_label_by_id('010').set_text('\n'.join(set2 - set1 - set3))
+        v.get_label_by_id('001').set_text('\n'.join(set3 - set1 - set2))
+        v.get_label_by_id('110').set_text('\n'.join(set1 & set2 - set3))
+        v.get_label_by_id('101').set_text('\n'.join(set1 & set3 - set2))
+        v.get_label_by_id('011').set_text('\n'.join(set2 & set3 - set1))
+        v.get_label_by_id('111').set_text('\n'.join(set1 & set2 & set3))
+
+    else:
+        print("La visualización solo está disponible para 2 o 3 conjuntos.")
+        return
+
+    plt.title("Diagrama de Venn de los conjuntos")
+    plt.show()
 
 
 
@@ -155,3 +192,5 @@ print(subconjuntos_resultado)  # Muestra los subconjuntos del primer conjunto
 
 print("\nSuperconjuntos del primer conjunto:")
 print(superconjuntos_resultado)  # Muestra los superconjuntos del primer conjunto
+
+visualizar_conjuntos(conjuntos) # Muestra el diagrama de Venn de los conjuntos
