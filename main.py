@@ -5,17 +5,28 @@ from upsetplot import from_memberships
 import pandas as pd
 
 
+
+
+
+#Metodo encargado de leer n cantidad de conjuntos los cuales van a ser procesados
 def obtener_conjuntos():
+
     n = int(input("Ingrese la cantidad de conjuntos: "))
+
     conjuntos = {}
     for i in range(n):
         nombre = chr(65 + i)
-        elementos = input(f"Ingrese los elementos del conjunto {nombre} separados por espacios: ").split()
+        elementos = input("Ingrese los elementos del conjunto {nombre} separados por espacios: ").split()
         conjuntos[nombre] = set(elementos)
     return conjuntos
 
 
 
+
+
+
+#Metodo encargado de unir los elementos de la lista de conjuntos recorriendo uno a uno 
+#los elementos de la cantidad de conjuntos que existen
 def unir_conjuntos(conjuntos):
     union = set()
     for conjunto in conjuntos.values():
@@ -26,9 +37,10 @@ def unir_conjuntos(conjuntos):
 
 
 
+
+
+#Metodo encargado de realizar la interseccion de los conjuntos tomando como base el primer conjunto
 def interseccion(conjuntos):
-    if not conjuntos:
-        return set()
 
     # Inicializamos la intersección con el primer conjunto
     interseccion = set(list(conjuntos.values())[0])
@@ -46,10 +58,12 @@ def interseccion(conjuntos):
 
 
 
+
+
+
+#Metodo que haya la diferencia del primer conjunto con respecto a todos los demas realizando una resta entre listas 
 def diferencia(conjuntos):
-    if not conjuntos:
-        return set()
-    
+  
     # Inicializamos la diferencia con el primer conjunto
     diferencia = set(list(conjuntos.values())[0])
     
@@ -60,20 +74,27 @@ def diferencia(conjuntos):
     return diferencia
     
 
+
+
+
+
+
+#Metodo encargado de encontrar la diferencia simetrica entre todos los conjuntos
 def dif_simetrica(conjuntos):
-    if not conjuntos:
-        return set()
-    
+
     # Inicializamos la diferencia simétrica con el primer conjunto
     resultado = set(list(conjuntos.values())[0])
     
-    # Iteramos sobre los demás conjuntos y aplicamos la diferencia simétrica manualmente
+    # Iteramos sobre los demás conjuntos y aplicamos la diferencia simétrica 
     for conjunto in list(conjuntos.values())[1:]:
+
         nueva_dif_sim = set()
+
         # Elementos en 'resultado' pero no en 'conjunto'
         for elemento in resultado:
             if elemento not in conjunto:
                 nueva_dif_sim.add(elemento)
+
         # Elementos en 'conjunto' pero no en 'resultado'
         for elemento in conjunto:
             if elemento not in resultado:
@@ -87,16 +108,27 @@ def dif_simetrica(conjuntos):
 
 
 
-def subconjuntos(conjuntos):
-    if not conjuntos:
-        return []
 
+
+#Metodo quie encuentra todos los subconjuntos del primer conjunto
+def subconjuntos(conjuntos):
+    # Obtener el primer conjunto del diccionario
     primer_conjunto = list(conjuntos.values())[0]
+    
     subconjuntos_encontrados = []
 
-    # Iteramos sobre todos los conjuntos para encontrar los subconjuntos del primer conjunto
-    for conjunto in conjuntos.values():
-        if conjunto.issubset(primer_conjunto):
+    # Iteramos sobre los conjuntos a partir de la segunda posición 
+    for conjunto in list(conjuntos.values())[1:]:
+        es_subconjunto = True  #
+        
+        # Verificamos manualmente si todos los elementos de 'conjunto' están en 'primer_conjunto'
+        for elemento in conjunto:
+            if elemento not in primer_conjunto:
+                es_subconjunto = False  
+                break
+        
+        # Si el conjunto actual es subconjunto del primero, lo agregamos a la lista
+        if es_subconjunto:
             subconjuntos_encontrados.append(conjunto)
     
     return subconjuntos_encontrados
@@ -104,20 +136,33 @@ def subconjuntos(conjuntos):
 
 
 
-
+#Metodo que encuentra todos los superconjuntos del primer conjunto
 def superconjuntos(conjuntos):
-    if not conjuntos:
-        return []
-
+    # Obtener el primer conjunto del diccionario
     primer_conjunto = list(conjuntos.values())[0]
+    
     superconjuntos_encontrados = []
 
-    # Iteramos sobre todos los conjuntos para encontrar los superconjuntos del primer conjunto
-    for conjunto in conjuntos.values():
-        if conjunto.issuperset(primer_conjunto):
+    # Iteramos sobre los conjuntos a partir de la segunda posición (omitir el primero)
+    for conjunto in list(conjuntos.values())[1:]:
+        es_superconjunto = True  
+        
+        # Verificamos manualmente si todos los elementos de 'primer_conjunto' están en 'conjunto'
+        for elemento in primer_conjunto:
+            if elemento not in conjunto:
+                es_superconjunto = False  
+                break
+        
+        # Si el conjunto actual es superconjunto del primero, lo agregamos a la lista
+        if es_superconjunto:
             superconjuntos_encontrados.append(conjunto)
     
     return superconjuntos_encontrados
+
+
+
+
+
 
 
 # Llamado de metodos
