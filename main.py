@@ -1,8 +1,5 @@
 import matplotlib.pyplot as plt
 from matplotlib_venn import venn2_unweighted, venn3_unweighted
-from upsetplot import plot as upsetplot
-from upsetplot import from_memberships
-import pandas as pd
 
 
 
@@ -16,7 +13,7 @@ def obtener_conjuntos():
     conjuntos = {}
     for i in range(n):
         nombre = chr(65 + i)
-        elementos = input("Ingrese los elementos del conjunto {nombre} separados por espacios: ").split()
+        elementos = input(f"Ingrese los elementos del conjunto {nombre} separados por espacios: ").split()
         conjuntos[nombre] = set(elementos)
     return conjuntos
 
@@ -99,10 +96,20 @@ def dif_simetrica(conjuntos):
         for elemento in conjunto:
             if elemento not in resultado:
                 nueva_dif_sim.add(elemento)
+        
         # Actualizamos el resultado con la nueva diferencia simétrica
         resultado = nueva_dif_sim
+                
+
+
+    # Obtenemos la intersección de todos los conjuntos
+    elementos_interseccion = interseccion(conjuntos)
     
-    return resultado
+    # Restamos la intersección de la diferencia simétrica
+    resultado = resultado - elementos_interseccion
+    
+    return resultado 
+
 
 
 
@@ -170,7 +177,7 @@ conjuntos = obtener_conjuntos()  # Permite al usuario ingresar los conjuntos
 
 union = unir_conjuntos(conjuntos)  # Obtiene la unión de todos los conjuntos
 
-interseccion = interseccion(conjuntos)  # Obtiene la intersección de todos los conjuntos
+interseccion_resultado = interseccion(conjuntos)  # Obtiene la intersección de todos los conjuntos
 
 diferencia_resultado = diferencia(conjuntos)  # Obtiene la diferencia entre el primer conjunto y los demás
 
@@ -224,7 +231,7 @@ print("\nUnión de todos los conjuntos:")
 print(union)  # Muestra la unión de todos los conjuntos
 
 print("\nIntersección de todos los conjuntos:")
-print(interseccion)  # Muestra la intersección de todos los conjuntos
+print(interseccion_resultado)  # Muestra la intersección de todos los conjuntos
 
 print("\nDiferencia entre el primer conjunto y los demás:")
 print(diferencia_resultado)  # Muestra la diferencia entre el primer conjunto y los demás
